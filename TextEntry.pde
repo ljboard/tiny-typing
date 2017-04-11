@@ -212,7 +212,7 @@ void draw()
 
 void mouseDragged() 
 {
-  is_dragging = true;
+  
 }
 
 boolean overButton(float x, float y, float w, float h) //simple function to do hit testing
@@ -230,28 +230,38 @@ void mousePressed()
   if (overButton(width/2 - section_width - padding, row1_height-section_height/2, 
                  section_width + padding, section_height)) {
     section = 1;
+    is_dragging = true;
   } else if (overButton(width/2, row1_height-section_height/2, 
                  section_width + padding, section_height)) {
     section = 2;
+    is_dragging = true;
   } else if (overButton(width/2 - section_width - padding, row2_height-section_height/2, 
                  section_width + padding, section_height)) {
     section = 3;
+    is_dragging = true;
   } else if (overButton(width/2, row2_height-section_height/2, 
                  section_width + padding, section_height)) {
     section = 4;
+    is_dragging = true;
   } else if (overButton(width/2 - section_width - padding, row3_height-section_height/2, 
                  section_width + padding, section_height)) {
     section = 5;
+    is_dragging = true;
   } else if (overButton(width/2, row3_height-section_height/2, 
                  section_width + padding, section_height)) {
     section = 6;
+    is_dragging = true;
   } else {
     section = 0;
+    // swiping left or right to add space or delete
+    //is_dragging = false;
+    //println("not on a space");
   }
   println(section);
 }
 
 void mouseReleased() {
+  boolean clicked_letter = false;
   if (is_dragging && section != 0) {
     Section S = sections[section-1];
     
@@ -267,9 +277,24 @@ void mouseReleased() {
       if (overButton(x, y, letter_button_width, letter_button_width)) {
         char selected_letter = S.keys.charAt(i);
         currentTyped += selected_letter;
+        clicked_letter = true;
+      }
+    }
+    
+    if (!clicked_letter) {
+      //deal w/ swiping left or right
+      if ((width/2 + sizeOfInputArea/2) - mouseX < 40) {
+        println("space", mouseX, width/2, width/2 + sizeOfInputArea/2);
+        currentTyped += " ";
+      } else if (mouseX - (width/2 - sizeOfInputArea/2) < 40) { 
+        println("delete", mouseX, width/2, width/2 + sizeOfInputArea/2);
+        if (currentTyped != "") {
+          currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+        }
       }
     }
     section = 0;
+    is_dragging = false;
   }  
 }
 
