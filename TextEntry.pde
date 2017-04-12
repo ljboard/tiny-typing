@@ -30,6 +30,7 @@ int letter_button_width = 40;
 int row1_height = 390;
 int row2_height = row1_height + section_height + padding;
 int row3_height = row2_height + section_height + padding;
+int row0_height = row1_height - section_height - padding;
 
 int col1; 
 int col2;
@@ -195,12 +196,25 @@ void draw()
     //my draw code
 
     if (section == 0) {
-        draw_section(section_1);
-        draw_section(section_2);
-        draw_section(section_3);
-        draw_section(section_4); 
-        draw_section(section_5);
-        draw_section(section_6);
+      // draw keyboard
+      draw_section(section_1);
+      draw_section(section_2);
+      draw_section(section_3);
+      draw_section(section_4); 
+      draw_section(section_5);
+      draw_section(section_6);
+      
+      // delete button
+      fill(0, 0, 255);
+      rect(col1, row0_height, section_width, section_height);
+      fill(0);
+      text("del", col1, row1_height - section_height);
+      
+      // space button
+      fill(0, 0, 255);
+      rect(col2, row0_height, section_width, section_height);
+      fill(0);
+      text("del", col1, row1_height - section_height);
     } else {
       Section S = sections[section-1];
       draw_section(S);
@@ -227,24 +241,32 @@ void mousePressed()
     section = 0;
     return;
   }
-  if (overButton(width/2 - section_width - padding, row1_height-section_height/2, 
+  if (overButton(col1 - section_width/2, row1_height-section_height/2, 
                  section_width + padding, section_height)) {
     section = 1;
-  } else if (overButton(width/2, row1_height-section_height/2, 
+  } else if (overButton(col2 - section_width/2, row1_height-section_height/2, 
                  section_width + padding, section_height)) {
     section = 2;
-  } else if (overButton(width/2 - section_width - padding, row2_height-section_height/2, 
+  } else if (overButton(col1 - section_width/2, row2_height-section_height/2, 
                  section_width + padding, section_height)) {
     section = 3;
-  } else if (overButton(width/2, row2_height-section_height/2, 
+  } else if (overButton(col2 - section_width/2, row2_height-section_height/2, 
                  section_width + padding, section_height)) {
     section = 4;
-  } else if (overButton(width/2 - section_width - padding, row3_height-section_height/2, 
+  } else if (overButton(col1 - section_width/2, row3_height-section_height/2, 
                  section_width + padding, section_height)) {
     section = 5;
-  } else if (overButton(width/2, row3_height-section_height/2, 
+  } else if (overButton(col2 - section_width/2, row3_height-section_height/2, 
                  section_width + padding, section_height)) {
     section = 6;
+  } else if (overButton(col1 - section_width/2, row0_height-section_height/2, section_width, section_height)) {
+    section = 0;
+    if (currentTyped.length() > 0) {
+      currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+    }
+  } else if (overButton(col2 - section_width/2, row0_height-section_height/2, section_width, section_height)) {
+    section = 0;
+    currentTyped += " ";
   } else {
     section = 0;
   }
