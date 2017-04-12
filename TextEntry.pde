@@ -23,39 +23,90 @@ float input_area_y;
 int padding = 5;
 int section = 0;
 
-int section_width = 100;
-int section_height = 40;
+int section_width = 50;
+int section_height = 150;
 int letter_button_width = 40;
 
-int row1_height = 390;
+int row1_height = 350;
 int row2_height = row1_height + section_height + padding;
 int row3_height = row2_height + section_height + padding;
 
 int col1; 
 int col2;
+int col3; 
+int col4;
 
-Section[] sections = new Section[6];
+int quadrant = -1;
+float quadrant_width = 22.5;
+
+Movement current_move = new Movement();
+private class Movement
+{
+  float x_start = -1;
+  float y_start = -1;
+  float x_end = -1;
+  float y_end = -1;
+  int quadrant = -1;
+}
+
+
+Section[] sections = new Section[4];
 
 boolean is_dragging = false;
 
-String[] letters = {"qwert", "yuiop", 
-                    "asdfg", "hjkl", 
-                    "zxcv", "bnm"};
+// qwe rty uio p
+// asd fgh jkl
+// zxc vbn m
+
+// topleft     top      topright
+// left        center      right
+// bottomleft bottom bottomright
+
+// 0 1 2
+// 3 4 5
+// 6 7 8
+
+String[] letters = {"qweasdzxc", 
+                    "rtyfghvbn", 
+                    "uiojklm  ", 
+                    "p        "};
                     
 Section section_1 = new Section();
 Section section_2 = new Section();
 Section section_3 = new Section();
 Section section_4 = new Section();
-Section section_5 = new Section();
-Section section_6 = new Section();
 
 private class Section
 {
   String keys = "";
-  int num_keys = -1;
   
+  char top_left;
+  char top;
+  char top_right;
+  
+  char left;
+  char center;
+  char right;
+  
+  char bottom_left;
+  char bottom;
+  char bottom_right;  
+    
   float x = -1;
-  float y = -1;
+}
+
+void set_direction_keys(Section S) {
+  S.top_left = S.keys.charAt(0);
+  S.top = S.keys.charAt(1);
+  S.top_right = S.keys.charAt(2);
+  
+  S.left = S.keys.charAt(3);
+  S.center = S.keys.charAt(4);
+  S.right = S.keys.charAt(5);
+  
+  S.bottom_left = S.keys.charAt(6);
+  S.bottom = S.keys.charAt(7);
+  S.bottom_right = S.keys.charAt(8);  
 }
 
 //You can modify anything in here. This is just a basic implementation.
@@ -67,83 +118,56 @@ void setup()
   // TODO: figure out phone sizing 
   orientation(PORTRAIT); //can also be LANDSCAPE -- sets orientation on android device
   size(800, 800); //Sets the size of the app. You may want to modify this to your device. Many phones today are 1080 wide by 1920 tall.
-  input_area_x = width/2;// - sizeOfInputArea/2;
-  input_area_y = height/2;// - sizeOfInputArea/2;
+  input_area_x = width/2 -  sizeOfInputArea/2;
+  input_area_y = height/2 - sizeOfInputArea/2;
   
  
-  rectMode(CENTER);
-  textAlign(CENTER, CENTER);
+  //rectMode(CENTER);
+  //textAlign(CENTER, CENTER);
   
-  col1 = width/2 - section_width/2 - padding/2;
-  col2 = width/2 + section_width/2 + padding/2;
+  col1 = width/2 - 3*section_width/2 - 3*padding/2;
+  col2 = width/2 - section_width/2 - padding/2;
+  col3 = width/2 + section_width/2 + padding/2;
+  col4 = width/2 + 3*section_width/2 + 3*padding/2;
   
   section_1.keys = letters[0];
-  section_1.num_keys = section_1.keys.length();
   section_1.x = col1;
-  section_1.y = row1_height;
+  set_direction_keys(section_1);
   sections[0] = section_1;
   
   section_2.keys = letters[1];
-  section_2.num_keys = section_2.keys.length();
   section_2.x = col2;
-  section_2.y = row1_height;  
+  set_direction_keys(section_2); 
   sections[1] = section_2;
   
   section_3.keys = letters[2];
-  section_3.num_keys = section_3.keys.length();
-  section_3.x = col1;
-  section_3.y = row2_height;
+  section_3.x = col3;
+  set_direction_keys(section_3);
   sections[2] = section_3;
   
   section_4.keys = letters[3];
-  section_4.num_keys = section_4.keys.length();
-  section_4.x = col2;
-  section_4.y = row2_height;  
+  section_4.x = col4;
+  set_direction_keys(section_4);
   sections[3] = section_4;  
-  
-  section_5.keys = letters[4];
-  section_5.num_keys = section_5.keys.length();
-  section_5.x = width/2 - section_width/2 - padding/2;
-  section_5.y = row3_height;
-  sections[4] = section_5;
-  
-  section_6.keys = letters[5];
-  section_6.num_keys = section_6.keys.length();
-  section_6.x = width/2 + section_width/2 + padding/2;
-  section_6.y = row3_height;  
-  sections[5] = section_6;   
   
   textFont(createFont("Arial", 24)); //set the font to arial 24
   noStroke(); //my code doesn't use any strokes.
 }
 
 
-void draw_keys(Section S) {
-  char letter;
-  int x; 
-  int y;
-  for (int i = 0; i < S.num_keys; i++) {
-    letter = S.keys.charAt(i);
-    x = width/2 + (letter_button_width+padding)*(i-S.num_keys/2);
-    y = row1_height - padding - letter_button_width;
-    fill(255, 0, 0);
-    ellipse(x, y, letter_button_width, letter_button_width);
-    fill(255);
-    textSize(32);
-    text(letter, x, y);
-    
-  }
-}
-
 void draw_section(Section S) {
   fill(255, 0, 0);
   stroke(1);
-  rect(S.x, S.y, 
+  rect(S.x-section_width/2, row1_height, 
        section_width, section_height);
   fill(0);
-    textAlign(CENTER);
+  textAlign(CENTER, CENTER);
   textSize(30);
-  text(S.keys, S.x, S.y);
+  
+  String display_keys = S.keys.substring(0, 3) + "\n" + 
+                        S.keys.substring(3, 6) + "\n" + 
+                        S.keys.substring(6, 9);
+  text(display_keys, S.x, row1_height + section_height/2);
 }
 
 
@@ -199,12 +223,9 @@ void draw()
         draw_section(section_2);
         draw_section(section_3);
         draw_section(section_4); 
-        draw_section(section_5);
-        draw_section(section_6);
     } else {
       Section S = sections[section-1];
       draw_section(S);
-      draw_keys(S);
     }
     noStroke();
   }
@@ -223,58 +244,82 @@ boolean overButton(float x, float y, float w, float h) //simple function to do h
 
 void mousePressed()
 {
+
   if (section != 0) {
     section = 0;
     return;
   }
-  if (overButton(width/2 - section_width - padding, row1_height-section_height/2, 
-                 section_width + padding, section_height)) {
+  if (overButton(col1 - section_width/2, row1_height, section_width, section_height)) {
     section = 1;
-  } else if (overButton(width/2, row1_height-section_height/2, 
-                 section_width + padding, section_height)) {
+  } else if (overButton(col2 - section_width/2, row1_height, section_width, section_height)) {
     section = 2;
-  } else if (overButton(width/2 - section_width - padding, row2_height-section_height/2, 
-                 section_width + padding, section_height)) {
+  } else if (overButton(col3 - section_width/2, row1_height, section_width, section_height)) {
     section = 3;
-  } else if (overButton(width/2, row2_height-section_height/2, 
-                 section_width + padding, section_height)) {
+  } else if (overButton(col4 - section_width/2, row1_height, section_width, section_height)) {
     section = 4;
-  } else if (overButton(width/2 - section_width - padding, row3_height-section_height/2, 
-                 section_width + padding, section_height)) {
-    section = 5;
-  } else if (overButton(width/2, row3_height-section_height/2, 
-                 section_width + padding, section_height)) {
-    section = 6;
-  } else {
+  } 
+  
+  else {
     section = 0;
   }
-  println(section);
+  current_move.x_start = mouseX;
+  current_move.y_start = mouseY;
+  current_move.x_end = -1;
+  current_move.y_end = -1;
+
+  println("after mousePressed", section);
+}
+
+char get_letter(Section S, int quadrant) {
+  println(S.keys, quadrant);
+  return S.keys.charAt(quadrant);
 }
 
 void mouseReleased() {
-  if (is_dragging && section != 0) {
-    Section S = sections[section-1];
-    
-    int x;
-    int y;
-
-    for (int i = 0; i < S.num_keys; i++) {
-      x = width/2 + (letter_button_width+padding)*(i-S.num_keys/2);
-      x = x - letter_button_width/2;
-      y = row1_height - padding - letter_button_width;
-      y = y - letter_button_width/2;
-
-      if (overButton(x, y, letter_button_width, letter_button_width)) {
-        char selected_letter = S.keys.charAt(i);
-        currentTyped += selected_letter;
-      }
-    }
-    section = 0;
+  if (is_dragging) {
+    current_move.x_end = mouseX;
+    current_move.y_end = mouseY;
+    float angle = getAngle(current_move.x_start, current_move.y_start, 
+                           current_move.x_end, current_move.y_end);
+    quadrant = getQuadrant(angle);
+    is_dragging = false;
+  } else {
+    quadrant = 4;
   }  
+  if (section != 0) {
+    currentTyped += get_letter(sections[section-1], quadrant);
+  }
+  section = 0;
+  is_dragging = false;
 }
 
 void keyPressed() {
   nextTrial(); //if so, advance to next trial
+}
+
+float getAngle(float x1, float y1, float x2, float y2)
+{
+  return 360 - (degrees(atan2(x2-x1,y2-y1)) + 180);
+}
+
+int getQuadrant(float angle)
+{
+  if (angle > 360 - quadrant_width || angle < quadrant_width) 
+    return 1;
+  else if (abs(angle - 45) < quadrant_width) 
+    return 2;
+  else if (abs(angle - 90) < quadrant_width) 
+    return 5;
+  else if (abs(angle - 135) < quadrant_width)
+    return 8;
+  else if (abs(angle - 180) < quadrant_width)
+    return 7;
+  else if (abs(angle - 225) < quadrant_width)
+    return 6;
+  else if (abs(angle - 270) < quadrant_width)
+    return 3;
+  else 
+    return 0;
 }
 
 void nextTrial()
