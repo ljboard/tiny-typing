@@ -52,6 +52,8 @@ Section section_6 = new Section();
 
 private class Section
 {
+  int index = -1; 
+  
   String keys = "";
   int num_keys = -1;
   
@@ -82,36 +84,42 @@ void setup()
   section_1.num_keys = section_1.keys.length();
   section_1.x = col1;
   section_1.y = row1_height;
+  section_1.index = 1;
   sections[0] = section_1;
   
   section_2.keys = letters[1];
   section_2.num_keys = section_2.keys.length();
   section_2.x = col2;
   section_2.y = row1_height;  
+  section_2.index = 2;
   sections[1] = section_2;
   
   section_3.keys = letters[2];
   section_3.num_keys = section_3.keys.length();
   section_3.x = col1;
   section_3.y = row2_height;
+  section_3.index = 3;
   sections[2] = section_3;
   
   section_4.keys = letters[3];
   section_4.num_keys = section_4.keys.length();
   section_4.x = col2;
   section_4.y = row2_height;  
+  section_4.index = 4;
   sections[3] = section_4;  
   
   section_5.keys = letters[4];
   section_5.num_keys = section_5.keys.length();
   section_5.x = width/2 - section_width/2 - padding/2;
   section_5.y = row3_height;
+  section_5.index = 5;
   sections[4] = section_5;
   
   section_6.keys = letters[5];
   section_6.num_keys = section_6.keys.length();
   section_6.x = width/2 + section_width/2 + padding/2;
   section_6.y = row3_height;  
+  section_6.index = 6;
   sections[5] = section_6;   
   
   textFont(createFont("Arial", 24)); //set the font to arial 24
@@ -123,28 +131,39 @@ void draw_keys(Section S) {
   char letter;
   int x; 
   int y;
+  int y_offset = ((S.index-1) / 2) * (section_height + padding);
+  println(S.index);
   for (int i = 0; i < S.num_keys; i++) {
     letter = S.keys.charAt(i);
     x = width/2 + (letter_button_width+padding)*(i-S.num_keys/2);
-    y = row1_height - padding - letter_button_width;
-    fill(255, 0, 0);
+    y = y_offset + row1_height - padding - letter_button_width;
+    
+    if (dist(mouseX, mouseY, x, y) < letter_button_width/2) {
+      fill(0, 255, 0, 200);
+    } else {
+      fill(0, 0, 255, 200);
+    }
+    
     ellipse(x, y, letter_button_width, letter_button_width);
     fill(255);
     textSize(32);
-    text(letter, x, y);
-    
+    text(letter, x, y + 2*padding);
   }
 }
 
 void draw_section(Section S) {
-  fill(255, 0, 0);
+  if (section == S.index) {
+    fill(255, 0, 0);
+  } else {
+    fill(255, 0, 0, 100);
+  } 
   stroke(1);
   rect(S.x, S.y, 
        section_width, section_height);
   fill(0);
     textAlign(CENTER);
   textSize(30);
-  text(S.keys, S.x, S.y);
+  text(S.keys, S.x, S.y + 2*padding);
 }
 
 
@@ -187,7 +206,11 @@ void draw()
     text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
     fill(255);
     text("Target:   " + currentPhrase, 70, 100); //draw the target string
-    text("Entered:  " + currentTyped, 70, 140); //draw what the user has entered thus far 
+    String currentTypedToDisplay = currentTyped;
+    if (currentTyped.length() > 0 && currentTyped.charAt(currentTyped.length()-1) == ' ') {
+      currentTypedToDisplay = currentTyped.substring(0, currentTyped.length() - 1) + "_";
+    }
+    text("Entered:  " + currentTypedToDisplay + "|", 70, 140); //draw what the user has entered thus far 
     fill(255, 0, 0);
     rect(800, 00, 200, 200); //drag next button
     fill(255);
@@ -208,13 +231,13 @@ void draw()
       fill(0, 0, 255);
       rect(col1, row0_height, section_width, section_height);
       fill(0);
-      text("del", col1, row1_height - section_height);
+      text("del", col1, row1_height - section_height + padding);
       
       // space button
       fill(0, 0, 255);
       rect(col2, row0_height, section_width, section_height);
       fill(0);
-      text("del", col1, row1_height - section_height);
+      text("space", col2, row1_height - section_height + padding);
     } else {
       Section S = sections[section-1];
       draw_section(S);
@@ -237,6 +260,7 @@ boolean overButton(float x, float y, float w, float h) //simple function to do h
 
 void mousePressed()
 {
+  if (startTime==0) return;
   if (section != 0) {
     section = 0;
     return;
@@ -279,12 +303,14 @@ void mouseReleased() {
     
     int x;
     int y;
+    int y_offset = ((S.index-1) / 2) * (section_height + padding);
 
     for (int i = 0; i < S.num_keys; i++) {
       x = width/2 + (letter_button_width+padding)*(i-S.num_keys/2);
       x = x - letter_button_width/2;
       y = row1_height - padding - letter_button_width;
       y = y - letter_button_width/2;
+      y = y + y_offset;
 
       if (overButton(x, y, letter_button_width, letter_button_width)) {
         char selected_letter = S.keys.charAt(i);
