@@ -228,13 +228,13 @@ void draw()
       draw_section(section_6);
       
       // delete button
-      fill(0, 0, 255);
+      fill(50, 0, 255);
       rect(col1, row0_height, section_width, section_height);
       fill(0);
       text("del", col1, row1_height - section_height + padding);
       
       // space button
-      fill(0, 0, 255);
+      fill(50, 0, 255);
       rect(col2, row0_height, section_width, section_height);
       fill(0);
       text("space", col2, row1_height - section_height + padding);
