@@ -40,13 +40,9 @@ Section[] sections = new Section[6];
 boolean is_dragging = false;
 
 String[] letters = {"qwert", "yuiop", 
-                    "asdfg", "hjkl", 
+                    "asdf", "ghjkl", 
                     "zxcv", "bnm"};
 
-String[] display_keys = {"qwert", "yuiop", 
-                         "asdfg", "hjkl", 
-                         "zxcv", "bnm"};
-                    
 Section section_1 = new Section();
 Section section_2 = new Section();
 Section section_3 = new Section();
@@ -132,17 +128,39 @@ void setup()
 
 void draw_keys(Section S) {
   textAlign(CENTER, CENTER);
+  boolean right_side;
   char letter;
   int x; 
+  int x_offset;
   int y;
-  int y_offset = ((S.index-1) / 2) * (section_height + padding);
+  int y_offset = ((S.index-1) / 2) * (section_height + padding) + section_height;
   println(S.index);
+  
+  int[] key_x;
+  int[] key_y;
+  
+  switch(S.index) {
+    case 1: 
+      // TODO: set key (x, y)s here
+  }
+  
   for (int i = 0; i < S.num_keys; i++) {
+    right_side = (S.index % 2 == 1);
     letter = S.keys.charAt(i);
-    x = width/2 + (letter_button_width+padding)*(i-S.num_keys/2);
+    //x = width/2 + (letter_button_width+padding)*(i-S.num_keys/2);
+    if (right_side) {
+      x = width/2 - section_width + letter_button_width/2;
+      x_offset = (letter_button_width+padding)*(i);
+    } else {
+      x = width/2 + section_width + letter_button_width/2;
+      x_offset = -(letter_button_width+padding)*(S.num_keys - i);
+    }
+    x = x + x_offset;
     y = y_offset + row1_height - padding - letter_button_width;
     
-    if (dist(mouseX, mouseY, x, y) < letter_button_width/2) {
+    //if (dist(mouseX, mouseY, x, y) < letter_button_width/2) {
+    if ((abs(mouseX - x) < letter_button_width/2) && 
+        (abs(mouseY - y) < letter_button_width)){
       fill(0, 255, 0, 200);
     } else {
       fill(0, 0, 255, 200);
@@ -156,17 +174,20 @@ void draw_keys(Section S) {
 }
 
 void draw_section(Section S) {
+  if (section != 0) {
+    return;
+  }
   if (section == S.index) {
     fill(255, 0, 0);
   } else {
     fill(255, 0, 0, 100);
   } 
-  stroke(1);
+  //stroke(1);
   rect(S.x, S.y, 
        section_width, section_height);
 
   fill(0);
-  textSize(28);
+  textSize(30);
   float x = S.x;
   if (S.index % 2 == 1) {
     textAlign(RIGHT, CENTER);
@@ -177,14 +198,14 @@ void draw_section(Section S) {
     x -= section_width/2;
     x += 2;
   }
-  text(display_keys[S.index - 1], x, S.y + 2*padding);
+  text(letters[S.index - 1], x, S.y + 2*padding);
 }
 
 
 //You can modify anything in here. This is just a basic implementation.
 void draw()
 {
-  PFont mono = createFont("Monospaced", 25);
+  PFont mono = createFont("Monospaced", 30);
   textFont(mono);  
 
   background(0); //clear background
@@ -323,17 +344,27 @@ void mouseReleased() {
     int x;
     int y;
     int y_offset = ((S.index-1) / 2) * (section_height + padding);
+    boolean right_col;
 
     for (int i = 0; i < S.num_keys; i++) {
+      right_col = (S.index % 2 == 0);
       x = width/2 + (letter_button_width+padding)*(i-S.num_keys/2);
+      if (right_col && S.index != 2) {
+        x += letter_button_width; 
+      }
       x = x - letter_button_width/2;
       y = row1_height - padding - letter_button_width;
-      y = y - letter_button_width/2;
+      y = y + letter_button_width;
       y = y + y_offset;
 
-      if (overButton(x, y, letter_button_width, letter_button_width)) {
+      // Button version
+      //if (overButton(x, y, letter_button_width, letter_button_width)) {
+      // Highlight version
+      if (abs(mouseX - (x+letter_button_width/2)) < letter_button_width/2 && 
+         (abs(mouseY - y) < letter_button_width)) {
         char selected_letter = S.keys.charAt(i);
         currentTyped += selected_letter;
+        break;
       }
     }
     section = 0;
@@ -342,8 +373,6 @@ void mouseReleased() {
 
 void keyPressed() {
   nextTrial(); //if so, advance to next trial
-  String[] fontList = PFont.list();
-  printArray(fontList);  
 }
 
 void nextTrial()
