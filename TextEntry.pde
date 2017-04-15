@@ -41,7 +41,7 @@ boolean is_dragging = false;
 
 String[] letters = {"qwert", "yuiop", 
                     "asdf", "ghjkl", 
-                    "zxcv", "bnm"};
+                    "zxc", "vbnm"};
 
 Section section_1 = new Section();
 Section section_2 = new Section();
@@ -158,7 +158,6 @@ void draw_keys(Section S) {
     x = x + x_offset;
     y = y_offset + row1_height - padding - letter_button_width;
     
-    //if (dist(mouseX, mouseY, x, y) < letter_button_width/2) {
     if ((abs(mouseX - x) < letter_button_width/2) && 
         (abs(mouseY - y) < letter_button_width)){
       fill(0, 255, 0, 200);
@@ -338,18 +337,16 @@ void mousePressed()
 }
 
 void mouseReleased() {
-  if (is_dragging && section != 0) {
+  if (section != 0) {
     Section S = sections[section-1];
     
     int x;
     int y;
     int y_offset = ((S.index-1) / 2) * (section_height + padding);
-    boolean right_col;
 
     for (int i = 0; i < S.num_keys; i++) {
-      right_col = (S.index % 2 == 0);
       x = width/2 + (letter_button_width+padding)*(i-S.num_keys/2);
-      if (right_col && S.index != 2) {
+      if (S.index == 6) {
         x += letter_button_width; 
       }
       x = x - letter_button_width/2;
@@ -357,9 +354,6 @@ void mouseReleased() {
       y = y + letter_button_width;
       y = y + y_offset;
 
-      // Button version
-      //if (overButton(x, y, letter_button_width, letter_button_width)) {
-      // Highlight version
       if (abs(mouseX - (x+letter_button_width/2)) < letter_button_width/2 && 
          (abs(mouseY - y) < letter_button_width)) {
         char selected_letter = S.keys.charAt(i);
