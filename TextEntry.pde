@@ -20,14 +20,14 @@ final float sizeOfInputArea = DPIofYourDeviceScreen*1; //aka, 1.0 inches square!
 //Display 
 float input_area_x;
 float input_area_y;
-int padding = 5;
+int padding = 0;
 int section = 0;
 
 int section_width = 100;
 int section_height = 40;
 int letter_button_width = 40;
 
-int row1_height = 390;
+int row1_height = 360;
 int row2_height = row1_height + section_height + padding;
 int row3_height = row2_height + section_height + padding;
 int row0_height = row1_height - section_height - padding;
@@ -42,6 +42,10 @@ boolean is_dragging = false;
 String[] letters = {"qwert", "yuiop", 
                     "asdfg", "hjkl", 
                     "zxcv", "bnm"};
+
+String[] display_keys = {"qwert", "yuiop", 
+                         "asdfg", "hjkl", 
+                         "zxcv", "bnm"};
                     
 Section section_1 = new Section();
 Section section_2 = new Section();
@@ -71,12 +75,11 @@ void setup()
   orientation(PORTRAIT); //can also be LANDSCAPE -- sets orientation on android device
   size(800, 800); //Sets the size of the app. You may want to modify this to your device. Many phones today are 1080 wide by 1920 tall.
   input_area_x = width/2;// - sizeOfInputArea/2;
-  input_area_y = height/2;// - sizeOfInputArea/2;
-  
+  input_area_y = height/2;// - sizeOfInputArea/2; 
  
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
-  
+   
   col1 = width/2 - section_width/2 - padding/2;
   col2 = width/2 + section_width/2 + padding/2;
   
@@ -128,6 +131,7 @@ void setup()
 
 
 void draw_keys(Section S) {
+  textAlign(CENTER, CENTER);
   char letter;
   int x; 
   int y;
@@ -160,16 +164,29 @@ void draw_section(Section S) {
   stroke(1);
   rect(S.x, S.y, 
        section_width, section_height);
+
   fill(0);
-    textAlign(CENTER);
-  textSize(30);
-  text(S.keys, S.x, S.y + 2*padding);
+  textSize(28);
+  float x = S.x;
+  if (S.index % 2 == 1) {
+    textAlign(RIGHT, CENTER);
+    x += section_width/2;
+    x -= 2;
+  } else {
+    textAlign(LEFT, CENTER);
+    x -= section_width/2;
+    x += 2;
+  }
+  text(display_keys[S.index - 1], x, S.y + 2*padding);
 }
 
 
 //You can modify anything in here. This is just a basic implementation.
 void draw()
 {
+  PFont mono = createFont("Monospaced", 25);
+  textFont(mono);  
+
   background(0); //clear background
   textSize(30);
 
@@ -228,13 +245,15 @@ void draw()
       draw_section(section_6);
       
       // delete button
-      fill(50, 0, 255);
+      textAlign(CENTER, CENTER);
+      fill(0, 0, 255);
       rect(col1, row0_height, section_width, section_height);
       fill(0);
       text("del", col1, row1_height - section_height + padding);
       
       // space button
-      fill(50, 0, 255);
+      textAlign(CENTER, CENTER);
+      fill(0, 0, 255);
       rect(col2, row0_height, section_width, section_height);
       fill(0);
       text("space", col2, row1_height - section_height + padding);
@@ -323,6 +342,8 @@ void mouseReleased() {
 
 void keyPressed() {
   nextTrial(); //if so, advance to next trial
+  String[] fontList = PFont.list();
+  printArray(fontList);  
 }
 
 void nextTrial()
