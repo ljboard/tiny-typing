@@ -13,7 +13,7 @@ float lettersExpectedTotal = 0; //a running total of the number of letters expec
 float errorsTotal = 0; //a running total of the number of errors (when hitting next)
 String currentPhrase = ""; //the current target phrase
 String currentTyped = ""; //what the user has typed so far
-final int DPIofYourDeviceScreen = 227; //you will need to look up the DPI or PPI of your device to make sure you get the right scale!!
+final int DPIofYourDeviceScreen = 199; //you will need to look up the DPI or PPI of your device to make sure you get the right scale!!
                                       //http://en.wikipedia.org/wiki/List_of_displays_by_pixel_density
 final float sizeOfInputArea = DPIofYourDeviceScreen*1; //aka, 1.0 inches square!
 
@@ -27,7 +27,7 @@ int section_width = 100;
 int section_height = 40;
 int letter_button_width = 40;
 
-int row1_height = 390;
+int row1_height = 475;
 int row2_height = row1_height + section_height + padding;
 int row3_height = row2_height + section_height + padding;
 int row0_height = row1_height - section_height - padding;
@@ -69,7 +69,7 @@ void setup()
     
   // TODO: figure out phone sizing 
   orientation(PORTRAIT); //can also be LANDSCAPE -- sets orientation on android device
-  size(800, 800); //Sets the size of the app. You may want to modify this to your device. Many phones today are 1080 wide by 1920 tall.
+  size(500, 800, OPENGL); //Sets the size of the app. You may want to modify this to your device. Many phones today are 1080 wide by 1920 tall.
   input_area_x = width/2;// - sizeOfInputArea/2;
   input_area_y = height/2;// - sizeOfInputArea/2;
   
@@ -110,14 +110,14 @@ void setup()
   
   section_5.keys = letters[4];
   section_5.num_keys = section_5.keys.length();
-  section_5.x = width/2 - section_width/2 - padding/2;
+  section_5.x = col1;
   section_5.y = row3_height;
   section_5.index = 5;
   sections[4] = section_5;
   
   section_6.keys = letters[5];
   section_6.num_keys = section_6.keys.length();
-  section_6.x = width/2 + section_width/2 + padding/2;
+  section_6.x = col2;
   section_6.y = row3_height;  
   section_6.index = 6;
   sections[5] = section_6;   
@@ -203,14 +203,14 @@ void draw()
     //you will need something like the next 10 lines in your code. Output does not have to be within the 2 inch area!
     textAlign(LEFT); //align the text left
     fill(128);
-    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
+    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 5, 50); //draw the trial count
     fill(255);
-    text("Target:   " + currentPhrase, 70, 100); //draw the target string
+    text("Target:   " + currentPhrase, 5, 100); //draw the target string
     String currentTypedToDisplay = currentTyped;
     if (currentTyped.length() > 0 && currentTyped.charAt(currentTyped.length()-1) == ' ') {
       currentTypedToDisplay = currentTyped.substring(0, currentTyped.length() - 1) + "_";
     }
-    text("Entered:  " + currentTypedToDisplay + "|", 70, 140); //draw what the user has entered thus far 
+    text("Entered:  " + currentTypedToDisplay + "|", 5, 140); //draw what the user has entered thus far 
     fill(255, 0, 0);
     rect(800, 00, 200, 200); //drag next button
     fill(255);
@@ -228,13 +228,13 @@ void draw()
       draw_section(section_6);
       
       // delete button
-      fill(50, 0, 255);
+      fill(0, 0, 255);
       rect(col1, row0_height, section_width, section_height);
       fill(0);
       text("del", col1, row1_height - section_height + padding);
       
       // space button
-      fill(50, 0, 255);
+      fill(0, 0, 255);
       rect(col2, row0_height, section_width, section_height);
       fill(0);
       text("space", col2, row1_height - section_height + padding);
