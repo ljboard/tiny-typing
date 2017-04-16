@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.Arrays; //<>//
 import java.util.Collections;
 
 //Given by Professor Harrison
@@ -22,18 +22,94 @@ float input_area_x;
 float input_area_y;
 int padding = 0;
 int section = 0;
+float center_x = 800/2;
+float center_y = 800/2;
 
 int section_width = 100;
 int section_height = 40;
-int letter_button_width = 40;
+int letter_button_width = 65;
 
-int row1_height = 360;
-int row2_height = row1_height + section_height + padding;
-int row3_height = row2_height + section_height + padding;
-int row0_height = row1_height - section_height - padding;
+int row1 = 360;
+int row2 = row1 + section_height + padding;
+int row3 = row2 + section_height + padding;
+int row0 = row1 - section_height - padding;
+int row4 = row3 + section_height + padding;
 
 int col1; 
 int col2;
+
+float x1_1 = center_x, 
+      x1_2 = center_x + 70, 
+      x1_3 = center_x + 60, 
+      x1_4 = center_x,
+      x1_5 = center_x - 70;
+float y1_1 = center_y - 70, 
+      y1_2 = center_y - 20, 
+      y1_3 = center_y + 50, 
+      y1_4 = center_y + 80, 
+      y1_5 = center_y + 50;
+float[] locations_x1 = {x1_1, x1_2, x1_3, x1_4, x1_5};
+float[] locations_y1 = {y1_1, y1_2, y1_3, y1_4, y1_5};
+
+float x2_1 = center_x, 
+      x2_2 = center_x - 70, 
+      x2_3 = center_x - 60, 
+      x2_4 = center_x, 
+      x2_5 = center_x + 60;
+float y2_1 = center_y - 70, 
+      y2_2 = center_y - 20, 
+      y2_3 = center_y + 50, 
+      y2_4 = center_y + 80, 
+      y2_5 = center_y + 50;
+float[] locations_x2 = {x2_1, x2_2, x2_3, x2_4, x2_5};
+float[] locations_y2 = {y2_1, y2_2, y2_3, y2_4, y2_5};
+
+float x3_1 = center_x - 60, 
+      x3_2 = center_x + 30,
+      x3_3 = center_x + 30, 
+      x3_4 = center_x - 60;
+float y3_1 = center_y - 70, 
+      y3_2 = center_y - 40, 
+      y3_3 = center_y + 40, 
+      y3_4 = center_y + 70;
+float[] locations_x3 = {x3_1, x3_2, x3_3, x3_4};
+float[] locations_y3 = {y3_1, y3_2, y3_3, y3_4};
+
+float x4_1 = center_x + 60, 
+      x4_2 = center_x - 10, 
+      x4_3 = center_x - 50, 
+      x4_4 = center_x - 10, 
+      x4_5 = center_x + 60;
+float y4_1 = center_y - 80, 
+      y4_2 = center_y - 60, 
+      y4_3 = center_y, 
+      y4_4 = center_y + 60, 
+      y4_5 = center_y + 80;
+float[] locations_x4 = {x4_1, x4_2, x4_3, x4_4, x4_5};
+float[] locations_y4 = {y4_1, y4_2, y4_3, y4_4, y4_5};
+
+float x5_1 = center_x - 60, 
+      x5_2 = center_x + 20, 
+      x5_3 = center_x + 40;
+float y5_1 = center_y - 20, 
+      y5_2 = center_y, 
+      y5_3 = center_y + 70;
+float[] locations_x5 = {x5_1, x5_2, x5_3};
+float[] locations_y5 = {y5_1, y5_2, y5_3};
+
+float x6_1 = center_x - 60, 
+      x6_2 = center_x - 50, 
+      x6_3 = center_x, 
+      x6_4 = center_x + 70;
+float y6_1 = center_y + 80, 
+      y6_2 = center_y + 10, 
+      y6_3 = center_y - 50, 
+      y6_4 = center_y - 70;
+float[] locations_x6 = {x6_1, x6_2, x6_3, x6_4};
+float[] locations_y6 = {y6_1, y6_2, y6_3, y6_4};
+
+float[][] all_locations_x = {locations_x1, locations_x2, locations_x3, locations_x4, locations_x5, locations_x6};
+float[][] all_locations_y = {locations_y1, locations_y2, locations_y3, locations_y4, locations_y5, locations_y6};
 
 Section[] sections = new Section[6];
 
@@ -42,13 +118,6 @@ boolean is_dragging = false;
 String[] letters = {"qwert", "yuiop", 
                     "asdf", "ghjkl", 
                     "zxc", "vbnm"};
-
-Section section_1 = new Section();
-Section section_2 = new Section();
-Section section_3 = new Section();
-Section section_4 = new Section();
-Section section_5 = new Section();
-Section section_6 = new Section();
 
 private class Section
 {
@@ -60,6 +129,14 @@ private class Section
   float x = -1;
   float y = -1;
 }
+
+Section section_1 = new Section();
+Section section_2 = new Section();
+Section section_3 = new Section();
+Section section_4 = new Section();
+Section section_5 = new Section();
+Section section_6 = new Section();
+
 
 //You can modify anything in here. This is just a basic implementation.
 void setup()
@@ -82,42 +159,42 @@ void setup()
   section_1.keys = letters[0];
   section_1.num_keys = section_1.keys.length();
   section_1.x = col1;
-  section_1.y = row1_height;
+  section_1.y = row1;
   section_1.index = 1;
   sections[0] = section_1;
   
   section_2.keys = letters[1];
   section_2.num_keys = section_2.keys.length();
   section_2.x = col2;
-  section_2.y = row1_height;  
+  section_2.y = row1;  
   section_2.index = 2;
   sections[1] = section_2;
   
   section_3.keys = letters[2];
   section_3.num_keys = section_3.keys.length();
   section_3.x = col1;
-  section_3.y = row2_height;
+  section_3.y = row2;
   section_3.index = 3;
   sections[2] = section_3;
   
   section_4.keys = letters[3];
   section_4.num_keys = section_4.keys.length();
   section_4.x = col2;
-  section_4.y = row2_height;  
+  section_4.y = row2;  
   section_4.index = 4;
   sections[3] = section_4;  
   
   section_5.keys = letters[4];
   section_5.num_keys = section_5.keys.length();
-  section_5.x = width/2 - section_width/2 - padding/2;
-  section_5.y = row3_height;
+  section_5.x = col1;
+  section_5.y = row3;
   section_5.index = 5;
   sections[4] = section_5;
   
   section_6.keys = letters[5];
   section_6.num_keys = section_6.keys.length();
-  section_6.x = width/2 + section_width/2 + padding/2;
-  section_6.y = row3_height;  
+  section_6.x = col2;
+  section_6.y = row3;  
   section_6.index = 6;
   sections[5] = section_6;   
   
@@ -128,38 +205,19 @@ void setup()
 
 void draw_keys(Section S) {
   textAlign(CENTER, CENTER);
-  boolean right_side;
   char letter;
-  int x; 
-  int x_offset;
-  int y;
-  int y_offset = ((S.index-1) / 2) * (section_height + padding) + section_height;
-  println(S.index);
-  
-  int[] key_x;
-  int[] key_y;
-  
-  switch(S.index) {
-    case 1: 
-      // TODO: set key (x, y)s here
-  }
-  
+  float x; 
+  float y;
+ 
   for (int i = 0; i < S.num_keys; i++) {
-    right_side = (S.index % 2 == 1);
+    println("S index:", S.index - 1);
     letter = S.keys.charAt(i);
-    //x = width/2 + (letter_button_width+padding)*(i-S.num_keys/2);
-    if (right_side) {
-      x = width/2 - section_width + letter_button_width/2;
-      x_offset = (letter_button_width+padding)*(i);
-    } else {
-      x = width/2 + section_width + letter_button_width/2;
-      x_offset = -(letter_button_width+padding)*(S.num_keys - i);
-    }
-    x = x + x_offset;
-    y = y_offset + row1_height - padding - letter_button_width;
+    print("letter:", letter);
+    x = all_locations_x[S.index - 1][i];
+    y = all_locations_y[S.index - 1][i];
     
     if ((abs(mouseX - x) < letter_button_width/2) && 
-        (abs(mouseY - y) < letter_button_width)){
+        (abs(mouseY - y) < letter_button_width/2)){
       fill(0, 255, 0, 200);
     } else {
       fill(0, 0, 255, 200);
@@ -204,6 +262,7 @@ void draw_section(Section S) {
 //You can modify anything in here. This is just a basic implementation.
 void draw()
 {
+  ellipseMode(CENTER);
   PFont mono = createFont("Monospaced", 30);
   textFont(mono);  
 
@@ -267,16 +326,16 @@ void draw()
       // delete button
       textAlign(CENTER, CENTER);
       fill(0, 0, 255);
-      rect(col1, row0_height, section_width, section_height);
+      rect(col1, row0, section_width, section_height);
       fill(0);
-      text("del", col1, row1_height - section_height + padding);
+      text("del", col1, row1 - section_height + padding);
       
       // space button
       textAlign(CENTER, CENTER);
       fill(0, 0, 255);
-      rect(col2, row0_height, section_width, section_height);
+      rect(col2, row0, section_width, section_height);
       fill(0);
-      text("space", col2, row1_height - section_height + padding);
+      text("space", col2, row1 - section_height + padding);
     } else {
       Section S = sections[section-1];
       draw_section(S);
@@ -284,6 +343,8 @@ void draw()
     }
     noStroke();
   }
+  fill(0);
+
 }
 
 void mouseDragged() 
@@ -304,30 +365,30 @@ void mousePressed()
     section = 0;
     return;
   }
-  if (overButton(col1 - section_width/2, row1_height-section_height/2, 
+  if (overButton(col1 - section_width/2, row1-section_height/2, 
                  section_width + padding, section_height)) {
     section = 1;
-  } else if (overButton(col2 - section_width/2, row1_height-section_height/2, 
+  } else if (overButton(col2 - section_width/2, row1-section_height/2, 
                  section_width + padding, section_height)) {
     section = 2;
-  } else if (overButton(col1 - section_width/2, row2_height-section_height/2, 
+  } else if (overButton(col1 - section_width/2, row2-section_height/2, 
                  section_width + padding, section_height)) {
     section = 3;
-  } else if (overButton(col2 - section_width/2, row2_height-section_height/2, 
+  } else if (overButton(col2 - section_width/2, row2-section_height/2, 
                  section_width + padding, section_height)) {
     section = 4;
-  } else if (overButton(col1 - section_width/2, row3_height-section_height/2, 
+  } else if (overButton(col1 - section_width/2, row3-section_height/2, 
                  section_width + padding, section_height)) {
     section = 5;
-  } else if (overButton(col2 - section_width/2, row3_height-section_height/2, 
+  } else if (overButton(col2 - section_width/2, row3-section_height/2, 
                  section_width + padding, section_height)) {
     section = 6;
-  } else if (overButton(col1 - section_width/2, row0_height-section_height/2, section_width, section_height)) {
+  } else if (overButton(col1 - section_width/2, row0-section_height/2, section_width, section_height)) {
     section = 0;
     if (currentTyped.length() > 0) {
       currentTyped = currentTyped.substring(0, currentTyped.length()-1);
     }
-  } else if (overButton(col2 - section_width/2, row0_height-section_height/2, section_width, section_height)) {
+  } else if (overButton(col2 - section_width/2, row0-section_height/2, section_width, section_height)) {
     section = 0;
     currentTyped += " ";
   } else {
@@ -340,19 +401,12 @@ void mouseReleased() {
   if (section != 0) {
     Section S = sections[section-1];
     
-    int x;
-    int y;
-    int y_offset = ((S.index-1) / 2) * (section_height + padding);
+    float x;
+    float y;
 
     for (int i = 0; i < S.num_keys; i++) {
-      x = width/2 + (letter_button_width+padding)*(i-S.num_keys/2);
-      if (S.index == 6) {
-        x += letter_button_width; 
-      }
-      x = x - letter_button_width/2;
-      y = row1_height - padding - letter_button_width;
-      y = y + letter_button_width;
-      y = y + y_offset;
+      x = all_locations_x[S.index - 1][i] - letter_button_width/2;
+      y = all_locations_y[S.index - 1][i];
 
       if (abs(mouseX - (x+letter_button_width/2)) < letter_button_width/2 && 
          (abs(mouseY - y) < letter_button_width)) {
