@@ -1,4 +1,4 @@
-import java.util.Arrays; //<>//
+import java.util.Arrays; //<>// //<>//
 import java.util.Collections;
 
 //Given by Professor Harrison
@@ -22,11 +22,11 @@ float input_area_x;
 float input_area_y;
 int padding = 0;
 int section = 0;
-float center_x = 800/2;
+float center_x = 500/2;
 float center_y = 800/2;
 
-int section_width = 100;
-int section_height = 40;
+int section_width = int(sizeOfInputArea/2) - 1;
+int section_height = 50;
 int letter_button_width = 65;
 
 int row1 = 360;
@@ -146,7 +146,7 @@ void setup()
     
   // TODO: figure out phone sizing 
   orientation(PORTRAIT); //can also be LANDSCAPE -- sets orientation on android device
-  size(800, 800); //Sets the size of the app. You may want to modify this to your device. Many phones today are 1080 wide by 1920 tall.
+  size(500, 800, OPENGL); //Sets the size of the app. You may want to modify this to your device. Many phones today are 1080 wide by 1920 tall.
   input_area_x = width/2;// - sizeOfInputArea/2;
   input_area_y = height/2;// - sizeOfInputArea/2; 
  
@@ -267,7 +267,7 @@ void draw()
   textFont(mono);  
 
   background(0); //clear background
-  textSize(30);
+  textSize(35);
 
  // image(watch,-200,200);
   fill(100);
@@ -301,12 +301,13 @@ void draw()
     fill(128);
     text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
     fill(255);
-    text("Target:   " + currentPhrase, 70, 100); //draw the target string
+    text("Target:   " + displayText(currentPhrase), 5, 100); //draw the target string
     String currentTypedToDisplay = currentTyped;
+   
     if (currentTyped.length() > 0 && currentTyped.charAt(currentTyped.length()-1) == ' ') {
       currentTypedToDisplay = currentTyped.substring(0, currentTyped.length() - 1) + "_";
     }
-    text("Entered:  " + currentTypedToDisplay + "|", 70, 140); //draw what the user has entered thus far 
+    text("Entered:  " + displayText(currentTypedToDisplay) + "|", 5, 250); //draw what the user has entered thus far 
     fill(255, 0, 0);
     rect(800, 00, 200, 200); //drag next button
     fill(255);
@@ -343,8 +344,25 @@ void draw()
     }
     noStroke();
   }
+
+  textSize(30);
+  fill(0, 255, 0);
+  text("Next Sentence", width/2, 3*height/4);
+  
   fill(0);
 
+}
+
+String displayText(String s) {
+  int n = s.length();
+  if (n > 10) {
+    s = s.substring(0, 10) + "\n" + s.substring(10, n);
+  } 
+  n = s.length();
+  if (s.length() > 40) { 
+    s = s.substring(0, 20) + "\n" + s.substring(20, n);
+  }
+  return s;
 }
 
 void mouseDragged() 
@@ -364,6 +382,9 @@ void mousePressed()
   if (section != 0) {
     section = 0;
     return;
+  }
+  if (overButton(width/2, 3*height/4 - 100, 300, 100)) {
+    nextTrial();
   }
   if (overButton(col1 - section_width/2, row1-section_height/2, 
                  section_width + padding, section_height)) {
