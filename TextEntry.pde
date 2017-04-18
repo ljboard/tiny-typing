@@ -25,75 +25,75 @@ int section = 0;
 float center_x = 500/2;
 float center_y = 800/2;
 
-int section_width = int(sizeOfInputArea/2) - 1;
+int section_width = int(sizeOfInputArea/2);
 int section_height = 50;
 int letter_button_width = 65;
 
-int row1 = 360;
+int row0 = 410;
+int row1 = row0 + section_height + padding + 29;
 int row2 = row1 + section_height + padding;
 int row3 = row2 + section_height + padding;
-int row0 = row1 - section_height - padding;
 int row4 = row3 + section_height + padding;
 
 int col1; 
 int col2;
 
-float x1_1 = center_x, 
-      x1_2 = center_x + 70, 
-      x1_3 = center_x + 60, 
-      x1_4 = center_x,
-      x1_5 = center_x - 70;
-float y1_1 = center_y - 70, 
-      y1_2 = center_y - 20, 
-      y1_3 = center_y + 50, 
-      y1_4 = center_y + 80, 
-      y1_5 = center_y + 50;
+float x1_1 = center_x - 80, 
+      x1_2 = center_x - 12, 
+      x1_3 = center_x + 53, 
+      x1_4 = center_x + 75,
+      x1_5 = center_x + 80;
+float y1_1 = center_y - 80, 
+      y1_2 = center_y - 75, 
+      y1_3 = center_y - 50, 
+      y1_4 = center_y + 14, 
+      y1_5 = center_y + 80;
 float[] locations_x1 = {x1_1, x1_2, x1_3, x1_4, x1_5};
 float[] locations_y1 = {y1_1, y1_2, y1_3, y1_4, y1_5};
 
-float x2_1 = center_x, 
-      x2_2 = center_x - 70, 
-      x2_3 = center_x - 60, 
-      x2_4 = center_x, 
-      x2_5 = center_x + 60;
-float y2_1 = center_y - 70, 
-      y2_2 = center_y - 20, 
-      y2_3 = center_y + 50, 
-      y2_4 = center_y + 80, 
-      y2_5 = center_y + 50;
+float x2_1 = center_x + 80, 
+      x2_2 = center_x + 10, 
+      x2_3 = center_x - 50, 
+      x2_4 = center_x - 60, 
+      x2_5 = center_x - 30;
+float y2_1 = center_y - 80, 
+      y2_2 = center_y - 80, 
+      y2_3 = center_y - 50, 
+      y2_4 = center_y + 20, 
+      y2_5 = center_y + 80;
 float[] locations_x2 = {x2_1, x2_2, x2_3, x2_4, x2_5};
 float[] locations_y2 = {y2_1, y2_2, y2_3, y2_4, y2_5};
 
-float x3_1 = center_x - 60, 
-      x3_2 = center_x + 30,
-      x3_3 = center_x + 30, 
-      x3_4 = center_x - 60;
-float y3_1 = center_y - 70, 
-      y3_2 = center_y - 40, 
-      y3_3 = center_y + 40, 
-      y3_4 = center_y + 70;
+float x3_1 = center_x - 80, 
+      x3_2 = center_x - 12,
+      x3_3 = center_x + 53, 
+      x3_4 = center_x + 75;
+float y3_1 = center_y - 50, 
+      y3_2 = center_y - 45, 
+      y3_3 = center_y - 20, 
+      y3_4 = center_y + 44;
 float[] locations_x3 = {x3_1, x3_2, x3_3, x3_4};
 float[] locations_y3 = {y3_1, y3_2, y3_3, y3_4};
 
-float x4_1 = center_x + 60, 
-      x4_2 = center_x - 10, 
+float x4_1 = center_x + 80, 
+      x4_2 = center_x + 10, 
       x4_3 = center_x - 50, 
-      x4_4 = center_x - 10, 
-      x4_5 = center_x + 60;
+      x4_4 = center_x - 60, 
+      x4_5 = center_x - 30;
 float y4_1 = center_y - 80, 
-      y4_2 = center_y - 60, 
-      y4_3 = center_y, 
-      y4_4 = center_y + 60, 
+      y4_2 = center_y - 80, 
+      y4_3 = center_y - 50, 
+      y4_4 = center_y + 20, 
       y4_5 = center_y + 80;
 float[] locations_x4 = {x4_1, x4_2, x4_3, x4_4, x4_5};
 float[] locations_y4 = {y4_1, y4_2, y4_3, y4_4, y4_5};
 
-float x5_1 = center_x - 60, 
-      x5_2 = center_x + 20, 
-      x5_3 = center_x + 40;
-float y5_1 = center_y - 20, 
-      y5_2 = center_y, 
-      y5_3 = center_y + 70;
+float x5_1 = center_x - 80, 
+      x5_2 = center_x - 12, 
+      x5_3 = center_x + 53;
+float y5_1 = center_y, 
+      y5_2 = center_y + 5, 
+      y5_3 = center_y + 30;
 float[] locations_x5 = {x5_1, x5_2, x5_3};
 float[] locations_y5 = {y5_1, y5_2, y5_3};
 
@@ -148,13 +148,13 @@ void setup()
   orientation(PORTRAIT); //can also be LANDSCAPE -- sets orientation on android device
   size(500, 800, OPENGL); //Sets the size of the app. You may want to modify this to your device. Many phones today are 1080 wide by 1920 tall.
   input_area_x = width/2;// - sizeOfInputArea/2;
-  input_area_y = height/2;// - sizeOfInputArea/2; 
+  input_area_y = height/2 + 100;// - sizeOfInputArea/2; 
  
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
    
-  col1 = width/2 - section_width/2 - padding/2;
-  col2 = width/2 + section_width/2 + padding/2;
+  col1 = int(input_area_x) - section_width/2 - padding/2;
+  col2 = int(input_area_x) + section_width/2 + padding/2;
   
   section_1.keys = letters[0];
   section_1.num_keys = section_1.keys.length();
@@ -204,6 +204,7 @@ void setup()
 
 
 void draw_keys(Section S) {
+  textSize(60);
   textAlign(CENTER, CENTER);
   char letter;
   float x; 
@@ -214,7 +215,7 @@ void draw_keys(Section S) {
     letter = S.keys.charAt(i);
     print("letter:", letter);
     x = all_locations_x[S.index - 1][i];
-    y = all_locations_y[S.index - 1][i];
+    y = 100 + all_locations_y[S.index - 1][i];
     
     if ((abs(mouseX - x) < letter_button_width/2) && 
         (abs(mouseY - y) < letter_button_width/2)){
@@ -225,8 +226,7 @@ void draw_keys(Section S) {
     
     ellipse(x, y, letter_button_width, letter_button_width);
     fill(255);
-    textSize(32);
-    text(letter, x, y + 2*padding);
+    text(letter, x, y + 2*padding - 10);
   }
 }
 
@@ -244,7 +244,7 @@ void draw_section(Section S) {
        section_width, section_height);
 
   fill(0);
-  textSize(30);
+  textSize(37);
   float x = S.x;
   if (S.index % 2 == 1) {
     textAlign(RIGHT, CENTER);
@@ -267,7 +267,7 @@ void draw()
   textFont(mono);  
 
   background(0); //clear background
-  textSize(35);
+  //textSize(35);
 
  // image(watch,-200,200);
   fill(100);
@@ -296,22 +296,23 @@ void draw()
 
   if (startTime!=0)
   {
+    textSize(28);
     //you will need something like the next 10 lines in your code. Output does not have to be within the 2 inch area!
     textAlign(LEFT); //align the text left
     fill(128);
-    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
+    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 5, 50); //draw the trial count
     fill(255);
-    text("Target:   " + displayText(currentPhrase), 5, 100); //draw the target string
+    text("Target: " + displayText(currentPhrase), 5, 100); //draw the target string
     String currentTypedToDisplay = currentTyped;
    
     if (currentTyped.length() > 0 && currentTyped.charAt(currentTyped.length()-1) == ' ') {
       currentTypedToDisplay = currentTyped.substring(0, currentTyped.length() - 1) + "_";
     }
-    text("Entered:  " + displayText(currentTypedToDisplay) + "|", 5, 250); //draw what the user has entered thus far 
-    fill(255, 0, 0);
-    rect(800, 00, 200, 200); //drag next button
-    fill(255);
-    text("NEXT > ", 850, 100); //draw next label
+    text("Entered: " + displayText(currentTypedToDisplay) + "|", 5, 250); //draw what the user has entered thus far 
+    //fill(255, 0, 0);
+    //rect(800, 00, 200, 200); //drag next button
+    //fill(255);
+    //text("NEXT > ", 850, 100); //draw next label
 
     //my draw code
 
@@ -326,17 +327,17 @@ void draw()
       
       // delete button
       textAlign(CENTER, CENTER);
-      fill(0, 0, 255);
+      fill(200, 30, 30);
       rect(col1, row0, section_width, section_height);
-      fill(0);
-      text("del", col1, row1 - section_height + padding);
+      fill(255);
+      text("del", col1, row0);
       
       // space button
       textAlign(CENTER, CENTER);
-      fill(0, 0, 255);
+      fill(20, 60, 255);
       rect(col2, row0, section_width, section_height);
-      fill(0);
-      text("space", col2, row1 - section_height + padding);
+      fill(255);
+      text("space", col2, row0);
     } else {
       Section S = sections[section-1];
       draw_section(S);
@@ -347,7 +348,10 @@ void draw()
 
   textSize(30);
   fill(0, 255, 0);
-  text("Next Sentence", width/2, 3*height/4);
+  rect(width/2, height - 100, width, 100);
+  fill(0);
+  textAlign(CENTER, CENTER);
+  text("Next Sentence", width/2, height - 100);
   
   fill(0);
 
@@ -359,8 +363,8 @@ String displayText(String s) {
     s = s.substring(0, 10) + "\n" + s.substring(10, n);
   } 
   n = s.length();
-  if (s.length() > 40) { 
-    s = s.substring(0, 20) + "\n" + s.substring(20, n);
+  if (s.length() > 35) { 
+    s = s.substring(0, 35) + "\n" + s.substring(35, n);
   }
   return s;
 }
@@ -381,9 +385,10 @@ void mousePressed()
   if (startTime==0) return;
   if (section != 0) {
     section = 0;
-    return;
+    //return;
   }
-  if (overButton(width/2, 3*height/4 - 100, 300, 100)) {
+  if (overButton(0, height - 100, width, 100)) {
+  //if (overButton(width/2, 3*height/4, 300, 100)) {
     nextTrial();
   }
   if (overButton(col1 - section_width/2, row1-section_height/2, 
@@ -426,11 +431,11 @@ void mouseReleased() {
     float y;
 
     for (int i = 0; i < S.num_keys; i++) {
-      x = all_locations_x[S.index - 1][i] - letter_button_width/2;
+      x = all_locations_x[S.index - 1][i];
       y = all_locations_y[S.index - 1][i];
 
-      if (abs(mouseX - (x+letter_button_width/2)) < letter_button_width/2 && 
-         (abs(mouseY - y) < letter_button_width)) {
+      if (abs(mouseX - x) < letter_button_width/2 && 
+         (abs(mouseY - (y+letter_button_width)) < letter_button_width)) {
         char selected_letter = S.keys.charAt(i);
         currentTyped += selected_letter;
         break;
@@ -440,9 +445,6 @@ void mouseReleased() {
   }  
 }
 
-void keyPressed() {
-  nextTrial(); //if so, advance to next trial
-}
 
 void nextTrial()
 {
