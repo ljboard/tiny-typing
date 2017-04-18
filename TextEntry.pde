@@ -284,6 +284,15 @@ void draw()
     }
     noStroke();
   }
+  
+  textSize(30);
+  fill(0, 255, 0);
+  rect(width/2, height - 100, width, 100);
+  fill(0);
+  textAlign(CENTER, CENTER);
+  text("Next Sentence", width/2, height - 100);
+  
+  fill(0);
 }
 
 void mouseDragged() 
@@ -302,8 +311,13 @@ void mousePressed()
   if (startTime==0) return;
   if (section != 0) {
     section = 0;
-    return;
+    //return;
   }
+  if (overButton(0, height - 150, width, 150)) {
+    nextTrial();
+  }
+  
+  
   if (overButton(col1 - section_width/2, row1_height-section_height/2, 
                  section_width + padding, section_height)) {
     section = 1;
@@ -363,10 +377,6 @@ void mouseReleased() {
     }
     section = 0;
   }  
-}
-
-void keyPressed() {
-  nextTrial(); //if so, advance to next trial
 }
 
 void nextTrial()
