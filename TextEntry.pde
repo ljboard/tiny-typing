@@ -1,4 +1,4 @@
-import java.util.Arrays; //<>// //<>//
+import java.util.Arrays; //<>// //<>// //<>//
 import java.util.Collections;
 
 //Given by Professor Harrison
@@ -211,9 +211,7 @@ void draw_keys(Section S) {
   float y;
  
   for (int i = 0; i < S.num_keys; i++) {
-    println("S index:", S.index - 1);
     letter = S.keys.charAt(i);
-    print("letter:", letter);
     x = all_locations_x[S.index - 1][i];
     y = 100 + all_locations_y[S.index - 1][i];
     
@@ -432,10 +430,8 @@ void mouseReleased() {
 
     for (int i = 0; i < S.num_keys; i++) {
       x = all_locations_x[S.index - 1][i];
-      y = all_locations_y[S.index - 1][i];
-
-      if (abs(mouseX - x) < letter_button_width/2 && 
-         (abs(mouseY - (y+letter_button_width)) < letter_button_width)) {
+      y = all_locations_y[S.index - 1][i] + 3*letter_button_width/2;
+      if (dist(mouseX, mouseY, x, y) < letter_button_width/2) {
         char selected_letter = S.keys.charAt(i);
         currentTyped += selected_letter;
         break;
