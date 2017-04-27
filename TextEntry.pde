@@ -1,9 +1,9 @@
-import java.util.Arrays; //<>// //<>// //<>//
+import java.util.Arrays; //<>//
 import java.util.Collections;
 
 //Given by Professor Harrison
 String[] phrases; //contains all of the phrases
-int totalTrialNum = 4; //the total number of phrases to be tested - set this low for testing. Might be ~10 for the real bakeoff!
+int totalTrialNum = 5; //the total number of phrases to be tested - set this low for testing. Might be ~10 for the real bakeoff!
 int currTrialNum = 0; // the current trial number (indexes into trials array above)
 float startTime = 0; // time starts when the first letter is entered
 float finishTime = 0; // records the time of when the final trial ends
@@ -17,6 +17,7 @@ final int DPIofYourDeviceScreen = 227; //you will need to look up the DPI or PPI
                                       //http://en.wikipedia.org/wiki/List_of_displays_by_pixel_density
 final float sizeOfInputArea = DPIofYourDeviceScreen*1; //aka, 1.0 inches square!
 
+
 //Display 
 float input_area_x;
 float input_area_y;
@@ -26,11 +27,11 @@ float center_x = 500/2;
 float center_y = 800/2;
 
 int section_width = int(sizeOfInputArea/2);
-int section_height = 50;
+int section_height = 57;
 int letter_button_width = 65;
 
-int row0 = 410;
-int row1 = row0 + section_height + padding + 29;
+int row0 = 415;
+int row1 = row0 + section_height + padding;
 int row2 = row1 + section_height + padding;
 int row3 = row2 + section_height + padding;
 int row4 = row3 + section_height + padding;
@@ -115,9 +116,9 @@ Section[] sections = new Section[6];
 
 boolean is_dragging = false;
 
-String[] letters = {"qwert", "yuiop", 
-                    "asdf", "ghjkl", 
-                    "zxc", "vbnm"};
+String[] letters = {"QWERT", "YUIOP", 
+                    "ASDF", "GHJKL", 
+                    "ZXC", "VBNM"};
 
 private class Section
 {
@@ -198,7 +199,6 @@ void setup()
   section_6.index = 6;
   sections[5] = section_6;   
   
-  textFont(createFont("Arial", 24)); //set the font to arial 24
   noStroke(); //my code doesn't use any strokes.
 }
 
@@ -211,9 +211,9 @@ void draw_keys(Section S) {
   float y;
  
   for (int i = 0; i < S.num_keys; i++) {
-    println("S index:", S.index - 1);
+    //println("S index:", S.index - 1);
     letter = S.keys.charAt(i);
-    print("letter:", letter);
+    //print("letter:", letter);
     x = all_locations_x[S.index - 1][i];
     y = 100 + all_locations_y[S.index - 1][i];
     
@@ -359,12 +359,12 @@ void draw()
 
 String displayText(String s) {
   int n = s.length();
-  if (n > 10) {
-    s = s.substring(0, 10) + "\n" + s.substring(10, n);
+  if (n > 15) {
+    s = s.substring(0, 15) + "\n" + s.substring(15, n);
   } 
   n = s.length();
-  if (s.length() > 35) { 
-    s = s.substring(0, 35) + "\n" + s.substring(35, n);
+  if (s.length() > 40) { 
+    s = s.substring(0, 40) + "\n" + s.substring(40, n);
   }
   return s;
 }
@@ -387,7 +387,7 @@ void mousePressed()
     section = 0;
     //return;
   }
-  if (overButton(0, height - 100, width, 100)) {
+ if (overButton(0, height - 150, width, 150)) {
   //if (overButton(width/2, 3*height/4, 300, 100)) {
     nextTrial();
   }
@@ -420,7 +420,7 @@ void mousePressed()
   } else {
     section = 0;
   }
-  println(section);
+  //println(section);
 }
 
 void mouseReleased() {
@@ -432,19 +432,16 @@ void mouseReleased() {
 
     for (int i = 0; i < S.num_keys; i++) {
       x = all_locations_x[S.index - 1][i];
-      y = all_locations_y[S.index - 1][i];
-
-      if (abs(mouseX - x) < letter_button_width/2 && 
-         (abs(mouseY - (y+letter_button_width)) < letter_button_width)) {
-        char selected_letter = S.keys.charAt(i);
-        currentTyped += selected_letter;
+      y = all_locations_y[S.index - 1][i] + 3*letter_button_width/2;
+      if (dist(mouseX, mouseY, x, y) < letter_button_width/2) {
+        String selected_letter = String.valueOf(S.keys.charAt(i));
+        currentTyped += selected_letter.toLowerCase();
         break;
       }
     }
     section = 0;
   }  
 }
-
 
 void nextTrial()
 {
